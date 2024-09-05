@@ -11,22 +11,34 @@ from myhdl import *
 def halfAdder(a, b, soma, carry):
     @always_comb
     def comb():
-        pass
+        soma.next = a ^ b
+        carry.next = a and b
 
     return instances()
 
 
 @block
 def fullAdder(a, b, c, soma, carry):
+    soma1 = Signal(bool(0))
+    carry1 = Signal(bool(0))
+    carry2 = Signal(bool(0))
+
+    ha1 = halfAdder(a, b, soma1, carry1)
+    ha2 = halfAdder(soma1, c, soma, carry2)
+
     @always_comb
-    def comb():
-        pass
+    def logic():
+        carry.next = carry1 | carry2  
 
-    return instances()
-
+    return ha1, ha2, logic
 
 @block
-def adder2bits(x, y, soma, carry):
+def adder2bits(x, y, soma, vaiUm):
+    c = Signal(bool(0))
+    half = halfAdder(x[0],y[0],soma[0],c)
+
+    full = fullAdder(x[1],y[1],c,soma[1],vaiUm)
+
     return instances()
 
 
