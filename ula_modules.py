@@ -44,8 +44,12 @@ def adder2bits(x, y, soma, vaiUm):
 
 @block
 def adder(x, y, soma, carry):
-    @always_comb
-    def comb():
-        pass
+    n = len(x)
+
+    vaium = [Signal(bool(0)) for i in range(n)]
+    faList = [None for i in range(n)]
+
+    for i in range(n):
+        faList[i] = fullAdder(x[i], y[i], vaium[i - 1], soma[i], vaium[i])
 
     return instances()
